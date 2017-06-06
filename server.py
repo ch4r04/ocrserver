@@ -11,7 +11,7 @@ from handledata import pointdata
 from handledata import ByteArrayData
 
 host = '0.0.0.0'
-port = 9999
+port = 9998
 addr = (host, port)
 
 class Servers(SRH):
