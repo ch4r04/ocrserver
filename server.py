@@ -129,17 +129,13 @@ class Servers(SRH):
         self.print_recv_packet(self.client_address[0],"Start Line Setup",self.CMDCODE,self.DATA,"请求线路设置")
         # 直接返回测试数据了 添加头和尾
         segment_header = binascii.a2b_hex('ffffeeee')
-        segment_trai = binascii.a2b_hex('eeeeffff')
-
         segment_center = self.ba.get_linesetup_bytearray()
+        segment_trai = binascii.a2b_hex('eeeeffff')
         # 构造完整帧
         segment_data = segment_header + segment_center + segment_trai
         #发送完整帧
         self.request.sendall(segment_data)
         self.print_recv_packet(self.client_address[0],"Send Line Setup",self.CMDCODE,segment_data,"发送线路信息成功")
-
-        pointdata.POINT_DATA = []
-
 
 
     #收到刷新线路设置请求
@@ -164,7 +160,6 @@ class Servers(SRH):
         segment_data = segment_header + segment_center + segment_trai
         self.request.sendall(segment_data)
         self.print_send_packet(self.client_address[0],"Send Get Template",self.CMDCODE,segment_data,"请求获取模板")
-        pointdata.POINT_DATA = []
 
     #收到停止获取template请求
     def req_stopgettemplate(self):
@@ -181,7 +176,8 @@ class Servers(SRH):
         # 构造完整帧
         segment_data = segment_header + segment_center + segment_trai
         self.request.sendall(segment_data)
-        pointdata.POINT_DATA = []
+        self.print_send_packet(self.client_address[0],"Send Trace Fault",self.CMDCODE,segment_data,"发送故障追踪结果数据")
+
 
 
 

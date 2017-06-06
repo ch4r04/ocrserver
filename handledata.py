@@ -91,10 +91,11 @@ class ByteArrayData:
     @db_session
     def get_linesetup_bytearray(self):
         data = FrameData_Linesetup.select()[:]
-        point_data = eval(data[0].POINTS)
-        segement1 = struct.pack('!i', data[0].TNDP)
+        #记得不要设置错 这里获取的是第二行数据 数据量有1W多
+        point_data = eval(data[1].POINTS)
+        segement1 = struct.pack('!i', data[1].TNDP)
         segement2 = b''.join(struct.pack('!i', elem) for elem in point_data)
-        segement3 = struct.pack('!i', data[0].TP)
+        segement3 = struct.pack('!i', data[1].TP)
         # print newbyte
         return segement1 + segement2 + segement3
 
@@ -111,6 +112,7 @@ class ByteArrayData:
     @db_session
     def get_tracefault_bytearray(self):
         data = FrameData_TraceFault.select()[:]
+        #这里获取第一行数据 数据量有1W多
         point_data = eval(data[0].POINTS)
         #TNDP
         segement1 = struct.pack('!i',data[0].TNDP)
@@ -122,9 +124,10 @@ class ByteArrayData:
     def get_template_bytearray(self):
 
         data = FrameData_Template.select()[:]
-        point_data = eval(data[0].POINTS)
+        #这里获取第二行数据 数据量也是1W多
+        point_data = eval(data[1].POINTS)
         #TNDP
-        segement1 = struct.pack('!i',data[0].TNDP)
+        segement1 = struct.pack('!i',data[1].TNDP)
         #数据点
         segement2 = b''.join(struct.pack('!i', elem) for elem in point_data)
         return segement1 + segement2
@@ -139,9 +142,12 @@ class ByteArrayData:
 
 
 if __name__ == '__main__':
-    # write_to_tracefault_db()
+    # write_to_ocrtest_db()
+    write_to_template_db()
+    write_to_linesetup_db()
+    write_to_tracefault_db()
     # read_from_template_db()
-    ba = ByteArrayData()
+    # ba = ByteArrayData()
     # print ba.get_template_bytearray()
-    print ba.is_login_identify("AAAAAAAAAAAAAAAA")
+    # print ba.is_login_identify("AAAAAAAAAAAAAAAA")
 
